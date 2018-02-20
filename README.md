@@ -5,6 +5,7 @@
 - Application is written in python
 - ServerApp is built using the flask web framework
 - A sqlite db is used with SQLAlchemy as the ORM (Object Relational Mapper)
+- Database Diagram in Database Diagram.pdf
 - Details of db table implementation can be found in models.py
 - URL routing and request handling logic can be found in routes.py
 - Marshmallow is used for schema validation
