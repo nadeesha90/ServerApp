@@ -48,7 +48,6 @@ def db_update(obj,schema):
         return jsonify({'message':'record could not be updated'}),400
 
 
-
 @app.route('/')
 @app.route('/index')
 def index():
@@ -103,9 +102,11 @@ def get_restaurants():
         restaurants = restaurant_query.all()
         return jsonify({'restaurants':restaurants_schema.dump(restaurants)})
     else:
+        #query restaurants by total score
         qu = db.session.query(Restaurant,Address,func.avg(Rating.totalscore)).group_by(Restaurant)
         if 'totalscore' in req_args:
             qu = qu.filter(Rating.totalscore > float(req_args['totalscore']))
+        #query restaurants by city, name, zipcode, category
         if 'city' in req_args:
             qu = qu.filter(Address.city == req_args['city'])
         if 'name' in req_args:
@@ -115,6 +116,7 @@ def get_restaurants():
         if 'category' in req_args:
             qu = qu.filter(Restaurant.category== req_args['category'])
 
+        #extract restaurants from query
         restaurants = [restaurant for restaurant,Address,totalscore in qu.all()]
 
         return jsonify({'restaurants':restaurants_schema.dump(restaurants)})
@@ -164,12 +166,14 @@ def add_rating(user_id):
                 rating_dat['user'] = user
                 rating_dat['restaurant'] = restaurant
                 del rating_dat['restaurant_id']
-                
+               
+                #ensure the user is not rating the same retaurant in less than a month
                 most_recent_rating = Rating.query.filter_by(user=user,restaurant=restaurant).order_by(Rating.date.desc()).first()
                 if most_recent_rating:
                     if (datetime.utcnow() - most_recent_rating.date) < timedelta(days=30):
                         return jsonify({'message':'please wait longer than a month to rate the same restaurant'}),400
 
+                #if total score is 1.0 ensure there is a comment
                 rating = Rating(**rating_dat)
                 if rating.comment == '' and rating.totalscore == 1.0:
                     return jsonify({'message':'please supply a comment for rating'}),400
@@ -198,6 +202,7 @@ def update_rating(user_id,rating_id):
     else:
         return jsonify({'message':'rating could not be found'}),404
 
+#get all ratings for a given user
 @app.route('/ratings/user/<int:user_id>')
 def get_ratings_user_id(user_id):
     user = User.query.get(user_id)
@@ -207,6 +212,7 @@ def get_ratings_user_id(user_id):
     else:
         return jsonify({'message':'user could not be found'}),404
 
+#get all ratings for a given restaurant
 @app.route('/ratings/restaurant/<int:restaurant_id>')
 def get_ratings_restaurant_id(restaurant_id):
     restaurant = Restaurant.query.get(restaurant_id)
