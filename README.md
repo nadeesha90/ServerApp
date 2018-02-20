@@ -46,6 +46,7 @@ get list of restaurants
 - http GET :5000/restaurants
 
 query restaurant by parameters (i.e. city, state, name, total score)
+gets restaurants in santa clara with avg total score > 3.0
 - http GET:5000/restaurants totalscore=3.0 city="santa clara"
 
 Add a restaurant 
