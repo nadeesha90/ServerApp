@@ -105,7 +105,7 @@ def get_restaurants():
         #query restaurants by total score
         qu = db.session.query(Restaurant,Address,func.avg(Rating.totalscore)).group_by(Restaurant)
         if 'totalscore' in req_args:
-            qu = qu.filter(Rating.totalscore > float(req_args['totalscore']))
+            qu = qu.filter(Rating.totalscore >= float(req_args['totalscore']))
         #query restaurants by city, name, zipcode, category
         if 'city' in req_args:
             qu = qu.filter(Address.city == req_args['city'])
