@@ -2,13 +2,13 @@
 
 # Architecture Details
 
-Application is written in python
-ServerApp is built using the flask web framework
-A sqlite db is used with SQLAlchemy as the ORM (Object Relational Mapper)
-Details of db table implementation can be found in models.py
-URL routing and request handling logic can be found in routes.py
-Marshmallow is used for schema validation
-All request params are sent as JSON and responses are also JSON
+- Application is written in python
+- ServerApp is built using the flask web framework
+- A sqlite db is used with SQLAlchemy as the ORM (Object Relational Mapper)
+- Details of db table implementation can be found in models.py
+- URL routing and request handling logic can be found in routes.py
+- Marshmallow is used for schema validation
+- All request params are sent as JSON and responses are also JSON
 
 # How to Run
 source env/bin/activate -> setup virtual environment
