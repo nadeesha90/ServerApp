@@ -60,10 +60,10 @@ add rating for a user
 http POST :5000/ratings/user/1 cost=4 food=4 cleanliness=4 service=4 restaurant_id=1
 
 update rating by a user for a restaurant
-http PUT :5000/ratings/user/<int:user_id>/<int:rating_id> cost=1
+http PUT :5000/ratings/user/<user_id>/<rating_id> cost=1
 
 get all ratings for a user
-http GET :5000/ratings/user/<int:user_id>
+http GET :5000/ratings/user/<user_id>
 
 get all ratings for a restaurant
-http GET :5000/ratings/restaurant/<int:restaurant_id>
+http GET :5000/ratings/restaurant/<restaurant_id>
